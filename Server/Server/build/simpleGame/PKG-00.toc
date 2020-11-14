@@ -1,0 +1,44 @@
+('C:\\Users\\kff50\\Documents\\Senior Year\\CMPSC 484\\JSON '
+ 'Practice\\Server\\build\\simpleGame\\PKG-00.pkg',
+ {'BINARY': 1,
+  'DATA': 1,
+  'EXECUTABLE': 1,
+  'EXTENSION': 1,
+  'PYMODULE': 1,
+  'PYSOURCE': 1,
+  'PYZ': 0},
+ [('PYZ-00.pyz',
+   'C:\\Users\\kff50\\Documents\\Senior Year\\CMPSC 484\\JSON '
+   'Practice\\Server\\build\\simpleGame\\PYZ-00.pyz',
+   'PYZ'),
+  ('struct',
+   'c:\\users\\kff50\\documents\\senior year\\python\\lib\\struct.pyo',
+   'PYMODULE'),
+  ('pyimod01_os_path',
+   'c:\\users\\kff50\\documents\\senior '
+   'year\\python\\lib\\site-packages\\PyInstaller\\loader\\pyimod01_os_path.pyc',
+   'PYMODULE'),
+  ('pyimod02_archive',
+   'c:\\users\\kff50\\documents\\senior '
+   'year\\python\\lib\\site-packages\\PyInstaller\\loader\\pyimod02_archive.pyc',
+   'PYMODULE'),
+  ('pyimod03_importers',
+   'c:\\users\\kff50\\documents\\senior '
+   'year\\python\\lib\\site-packages\\PyInstaller\\loader\\pyimod03_importers.pyc',
+   'PYMODULE'),
+  ('pyiboot01_bootstrap',
+   'c:\\users\\kff50\\documents\\senior '
+   'year\\python\\lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'PYSOURCE'),
+  ('simpleGame',
+   'C:\\Users\\kff50\\Documents\\Senior Year\\CMPSC 484\\JSON '
+   'Practice\\Server\\simpleGame.py',
+   'PYSOURCE'),
+  ('simpleGame.exe.manifest',
+   'C:\\Users\\kff50\\Documents\\Senior Year\\CMPSC 484\\JSON '
+   'Practice\\Server\\build\\simpleGame\\simpleGame.exe.manifest',
+   'BINARY')],
+ True,
+ False,
+ False,
+ [])
