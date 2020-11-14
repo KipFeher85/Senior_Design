@@ -1,0 +1,2120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Games Available</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+</head>
+
+<style>
+    .flex-container {
+        display: flex;
+    }
+
+    .centerImage {
+        text-align:center;
+        display:block;
+        margin-left:auto;
+        margin-right: auto;
+        border-radius: 12px;
+    }
+
+    body {
+        font-weight: 300;
+        color:#000000;
+        background-color:#17408b;
+    }
+
+    .container td {
+        font-weight: normal;
+        font-size: 1em;
+        -webkit-box-shadow: 0 2px 2px -2px #0E1119;
+        -moz-box-shadow: 0 2px 2px -2px #0E1119;
+            box-shadow: 0 2px 2px -2px #0E1119;
+    }
+
+
+    .container {
+        text-align: left;
+        overflow: hidden;
+        width: 80%;
+        margin: 0 auto;
+        display: table;
+        padding: 0 0 8em 0;
+        align: center;
+    }
+
+    .container td, .container th {
+        padding-bottom: 2%;
+        padding-top: 2%;
+        padding-left:2%;
+    }
+
+    /* Background-color of the odd rows */
+    .container tr:nth-child(odd) {
+      background-color: #DCDCDC;
+    }
+
+    /* Background-color of the even rows */
+    .container tr:nth-child(even) {
+      background-color: #FFFAFA;
+    }
+
+    /*Header color*/
+    .container th {
+      background-color: #DCDCDC;
+    }
+
+    .container th:active {
+        background-color: #FFFFFF;
+    }
+
+    .container td:first-child { color: #000000; }
+
+    .container tr:hover {
+        background-color: #36454f;
+        -webkit-box-shadow: 0 6px 6px -6px #DCDCDC;
+        -moz-box-shadow: 0 6px 6px -6px #DCDCDC;
+            box-shadow: 0 6px 6px -6px #DCDCDC;
+    }
+
+    .container td:hover {
+    background-color: #FFFAFA;
+    color: #403E10;
+    font-weight: bold;
+
+
+
+    box-shadow: #DCDCDC -1px 1px, #DCDCDC -2px 2px, #DCDCDC -3px 3px, #DCDCDC -4px 4px, #DCDCDC -5px 5px, #DCDCDC -6px 6px;
+    transform: translate3d(6px, -6px, 0);
+
+    transition-delay: 0s;
+      transition-duration: 0.4s;
+      transition-property: all;
+    transition-timing-function: line;
+    }
+
+    @media (max-width: 800px) {
+    .container td:nth-child(4),
+    .container th:nth-child(4) { display: none; }
+    }
+
+    .centerImage {
+        text-align:center;
+        display:block;
+        margin-left:auto;
+        margin-right: auto;
+        border-radius: 12px;
+    }
+
+    nav {
+        width: 100%;
+
+        top: 0;
+        height: 35px;
+        background-color: #DCDCDC;
+        font-size: 30px;
+        font-weight: bold;
+        word-spacing: 30px;
+        font-family:"Helvetica";
+        font-stretch:condensed;
+        position: sticky;
+    }
+
+    a:link {
+        color: black;
+        text-decoration: none;
+        text-shadow: 0 1px 1px #bbb,
+			   0 2px 2px #666;
+	    padding: 10px;
+    }
+
+    a:visited {
+        color: black;
+    }
+
+    a:hover {
+        color: #c9082a;
+        text-shadow: 0 1px 1px #ddd,
+			   0 2px 2 #c5bba5;
+    }
+
+    h1, h2 {
+        font-family:"Helvetica";
+        font-stretch:condensed;
+	    color: #ffffff;
+	    text-shadow: 0 2px 2px #000000;
+    }
+
+
+    #topButton {
+        font-family:"Helvetica";
+        text-align:center;
+        display:block;
+        font-size: 16px;
+        border: none;
+
+        position: fixed;
+        bottom: 20px;
+        right: 30px;
+        z-index: 99;
+        background-color: #c9082a;
+        border-radius: 10px;
+        padding: 10px;
+    }
+</style>
+<nav>
+    <a href="index.html">HOME</a>
+    <a href="Game.html">GAMES</a>
+    <a href="password-insert.html">INSERT</a>
+    <a href="password-delete.html">DELETE</a>
+</nav>
+<body>
+
+<script>
+    var actualJumpList;
+    var actualShotList;
+    var actualPassList;
+    var actualAirList;
+
+    var gameid;
+    var gamedate;
+    var homeT;
+    var awayT;
+    function sortTable(n, table1)
+    {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = table1;
+        switching = true;
+        dir = "asc";
+        while (switching)
+        {
+            switching = false;
+            rows = table.rows;
+            for (i = 0; i < (rows.length - 1); i++)
+            {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc")
+                {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase())
+                    {
+                        shouldSwitch= true;
+                        break;
+                    }
+                }
+                else if (dir == "desc")
+                {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase())
+                    {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch)
+            {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++;
+            }
+            else
+            {
+                if (switchcount == 0 && dir == "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+    function sortTableNumbers(n, table1)
+    {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = table1;
+        switching = true;
+        dir = "asc";
+        while (switching)
+        {
+            switching = false;
+            rows = table.rows;
+            for (i = 0; i < (rows.length - 1); i++)
+            {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir == "asc")
+                {
+                    if (Number(x.innerHTML) > Number(y.innerHTML)) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                else if (dir == "desc")
+                {
+                    if (Number(x.innerHTML) < Number(y.innerHTML)) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch)
+            {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++;
+            }
+            else
+            {
+                if (switchcount == 0 && dir == "asc")
+                {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+    function passCoordList(actualPassList, passID)
+    {
+        var actualCounter = passID;
+        reply2 = actualPassList;
+        var fileLength = reply2.length;
+
+        var xArray = []
+        var yArray = []
+        var zArray = []
+        var clockArray = []
+
+        for (var i = 0; i < reply2[actualCounter].coordinates.length; i++)
+        {
+            xArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].x))
+            yArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].y))
+            zArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].z))
+            clockArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].gameclock))
+        }
+
+        var table = document.createElement('table');
+
+        var tr = document.createElement('tr');
+
+        var th0 = document.createElement('th');
+        th0.appendChild(document.createTextNode("Game Clock"));
+        var th1 = document.createElement('th');
+        th1.appendChild(document.createTextNode("X Coordinate"));
+        var th2 = document.createElement('th');
+        th2.appendChild(document.createTextNode("Y Coordinate"));
+        var th3 = document.createElement('th');
+        th3.appendChild(document.createTextNode("Z Coordinate"));
+
+        tr.appendChild(th0);
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+
+        table.appendChild(tr);
+
+        for (var i = 0; i < xArray.length; i++)
+        {
+            var tr = document.createElement('tr');
+            var td0 = document.createElement('td');
+            td0.appendChild(document.createTextNode(clockArray[i]));
+            var td1 = document.createElement('td');
+            td1.appendChild(document.createTextNode(xArray[i]));
+            var td1 = document.createElement('td');
+            td1.appendChild(document.createTextNode(xArray[i]));
+            var td2 = document.createElement('td');
+            td2.appendChild(document.createTextNode(yArray[i]));
+            var td3 = document.createElement('td');
+            td3.appendChild(document.createTextNode(zArray[i]));
+
+            tr.appendChild(td0);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+
+            table.appendChild(tr);
+        }
+
+        table.setAttribute('class', 'container');
+
+        document.body.appendChild(table);
+    }
+    function passDetail(actualPassList, passID)
+    {
+        var actualCounter = passID;
+        reply2 = actualPassList;
+        var fileLength = reply2.length;
+
+        var table2 = document.createElement('table');
+
+        var tr2 = document.createElement('tr');
+
+        var tha = document.createElement('th');
+        var thb = document.createElement('th');
+        var thc = document.createElement('th');
+        var thd = document.createElement('th');
+        var the = document.createElement('th');
+
+        tha.appendChild(document.createTextNode("Passing Player"));
+        thb.appendChild(document.createTextNode("Receiving Player"));
+        thc.appendChild(document.createTextNode("Team"));
+        thd.appendChild(document.createTextNode("Quarter"));
+        var h7 = document.createElement('th');
+        h7.appendChild(document.createTextNode("Distance"));
+        the.appendChild(document.createTextNode("Time"));
+
+        tr2.appendChild(tha);
+        tr2.appendChild(thb);
+        tr2.appendChild(thc);
+        tr2.appendChild(thd);
+        tr2.appendChild(h7);
+        tr2.appendChild(the);
+
+        table2.appendChild(tr2);
+
+        pName = reply2[actualCounter].passername;
+        rName = reply2[actualCounter].receivername;
+        team = reply2[actualCounter].team;
+        quarter = reply2[actualCounter].quarter;
+        distance = reply2[actualCounter].distance;
+        time = reply2[actualCounter].time;
+
+        var tr3 = document.createElement('tr');
+        var a = document.createElement('td');
+        a.appendChild(document.createTextNode(pName));
+        var b = document.createElement('td');
+        b.appendChild(document.createTextNode(rName));
+        var c = document.createElement('td');
+        c.appendChild(document.createTextNode(team));
+        var d = document.createElement('td');
+        d.appendChild(document.createTextNode(quarter));
+        var e = document.createElement('td');
+        e.appendChild(document.createTextNode(time));
+        var f = document.createElement('td');
+        f.appendChild(document.createTextNode(distance));
+
+
+        tr3.appendChild(a);
+        tr3.appendChild(b);
+        tr3.appendChild(c);
+        tr3.appendChild(d);
+        tr3.appendChild(f);
+        tr3.appendChild(e);
+
+        table2.setAttribute('class', 'container');
+        table2.appendChild(tr3);
+
+
+        document.body.appendChild(table2);
+
+        var xArray = []
+        var yArray = []
+        var zArray = []
+        var clockArray = []
+
+        for (var i = 0; i < reply2[actualCounter].coordinates.length; i++)
+        {
+            xArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].x))
+            yArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].y))
+            zArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].z))
+            clockArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].gameclock))
+        }
+
+        var x = {
+            x: xArray,
+            y: yArray,
+            z: zArray,
+
+            type: 'scatter3d'
+        };
+        var data = [x];
+        var layout = {
+            width: 1000,
+            height: 500,
+            margin: {
+                t: 0,
+                b: 40,
+                l: 50,
+                r: 25
+            },
+            xaxis: {
+                title: {
+                    text: "X- Axis"
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "Y- Axis"
+                }
+            }
+        };
+
+        var div = document.createElement('div');
+
+        Plotly.newPlot(div, data, layout);
+        div.setAttribute('class', 'container');
+        div.setAttribute('align', 'center');
+        document.body.appendChild(div);
+
+
+        var table9 = document.createElement('table');
+
+        var th1 = document.createElement('th');
+        th1.appendChild(document.createTextNode("Coordinates"));
+
+        table9.appendChild(th1);
+
+        var tr =document.createElement('tr');
+        var td1 = document.createElement('td');
+
+        var btn23 = document.createElement('button');
+        btn23.appendChild(document.createTextNode("View list of coordinates"));
+        btn23.onclick = (function(actualPassList, actualCounter) {
+            return function() {
+
+               table9.style.display = 'none';
+               passCoordList(actualPassList, actualCounter);
+
+            };
+        })(actualPassList, actualCounter);
+
+        td1.appendChild(btn23);
+
+        tr.appendChild(td1);
+
+        table9.appendChild(tr);
+
+        table9.setAttribute('class', 'container');
+
+        document.body.appendChild(table9);
+    }
+    function passList(id)
+    {
+        var actualGameId = id;
+        var actualCounter = 0;
+        $.ajax({
+            url: "/cgi-bin/simpleGame.py",
+            type: "post",
+            datatype:"json",
+            data: {'gameid': actualGameId,'pass':'True'},
+            success: function(response)
+            {
+                reply = JSON.stringify(response);
+                reply2 = JSON.parse(reply);
+                actualPassList = reply2;
+                var fileLength = reply2.length;
+
+                var table = document.createElement('table');
+
+                table.setAttribute('class', 'container');
+
+                //Create headers
+                var h1 = document.createElement('th');
+                h1.appendChild(document.createTextNode("Passing Player"));
+                h1.onclick = function () { sortTable(0, table) };
+                var h2 = document.createElement('th');
+                h2.appendChild(document.createTextNode("Receiving Player"));
+                h2.onclick = function () { sortTable(1, table) };
+                var h3 = document.createElement('th');
+                h3.appendChild(document.createTextNode("Team"));
+                h3.onclick = function () { sortTable(2, table) };
+                var h4 = document.createElement('th');
+                h4.appendChild(document.createTextNode("Quarter"));
+                h4.onclick = function () { sortTable(3, table) };
+                var h5 = document.createElement('th');
+                h5.appendChild(document.createTextNode("Time"));
+                var h7 = document.createElement('th');
+                h7.appendChild(document.createTextNode("Distance (Feet)"));
+                h7.onclick = function () { sortTableNumbers(5, table) };
+                var h8 = document.createElement('th');
+                h8.appendChild(document.createTextNode("Speed (MPH)"));
+                h8.onclick = function () { sortTableNumbers(6, table) };
+                var h9 = document.createElement('th');
+                h9.appendChild(document.createTextNode("Assist"));
+                h9.onclick = function () { sortTable(7, table) };
+                var h10 = document.createElement('th');
+                h10.appendChild(document.createTextNode("Potential Assist"));
+                h10.onclick = function () { sortTable(8, table) };
+                var h11 = document.createElement('th');
+                h11.appendChild(document.createTextNode("Assist Value"));
+                h11.onclick = function () { sortTable(9, table) };
+                var h6 = document.createElement('th');
+                h6.appendChild(document.createTextNode("Query"));
+
+                //Add headers to table
+                table.appendChild(h1);
+                table.appendChild(h2);
+                table.appendChild(h3);
+                table.appendChild(h4);
+                table.appendChild(h5);
+                table.appendChild(h7);
+                table.appendChild(h8);
+                table.appendChild(h9);
+                table.appendChild(h10);
+                table.appendChild(h11);
+                table.appendChild(h6);
+
+
+                for (i = 0; i < fileLength; i++){
+                    var tr = document.createElement('tr');
+                    var td1 = document.createElement('td');
+                    var td2 = document.createElement('td');
+                    var td3 = document.createElement('td');
+                    var td4 = document.createElement('td');
+                    var td5 = document.createElement('td');
+                    var td7 = document.createElement('td');
+                    var td8 = document.createElement('td');
+                    var td9 = document.createElement('td');
+                    var td10 = document.createElement('td');
+                    var td11 = document.createElement('td');
+                    var td6 = document.createElement('td');
+                    actualCounter = i;
+
+                    pName = reply2[i].passername;
+                    rName = reply2[i].receivername;
+                    team = reply2[i].team;
+                    quarter = reply2[i].quarter;
+                    distance = reply2[i].distance;
+                    time = reply2[i].time;
+                    speed = reply2[i].speed;
+                    assist = reply2[i].assist;
+                    potential_assist = reply2[i].potential_assist;
+                    assist_value = reply2[i].assist_value;
+
+
+                    var text1 = document.createTextNode(pName);
+                    var text2 = document.createTextNode(rName);
+                    var text3 = document.createTextNode(team);
+                    var text4 = document.createTextNode(quarter);
+                    var text5 = document.createTextNode(time);
+                    var text6 = document.createTextNode(distance);
+                    var text7 = document.createTextNode(speed);
+                    var text9 = document.createTextNode(assist);
+                    var text10 = document.createTextNode(potential_assist);
+                    var text11 = document.createTextNode(assist_value);
+                    var btn = document.createElement('button');
+                    btn.appendChild(document.createTextNode("Query"));
+                    btn.onclick = (function(actualPassList, actualCounter) {
+                    return function() {
+                       table.style.display = 'none';
+                       passDetail(actualPassList, actualCounter);
+                    };
+                    })(actualPassList, actualCounter);
+
+
+                    td1.appendChild(text1);
+                    td2.appendChild(text2);
+                    td3.appendChild(text3);
+                    td4.appendChild(text4);
+                    td5.appendChild(text5);
+                    td8.appendChild(text7);
+                    td9.appendChild(text9);
+                    td10.appendChild(text10);
+                    td11.appendChild(text11);
+                    td6.appendChild(btn);
+                    td7.appendChild(text6);
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    tr.appendChild(td5);
+                    tr.appendChild(td7);
+                    tr.appendChild(td8);
+                    tr.appendChild(td9);
+                    tr.appendChild(td10);
+                    tr.appendChild(td11);
+                    tr.appendChild(td6);
+
+                    table.appendChild(tr);
+                }
+
+                document.body.appendChild(table);
+            }
+        });
+    }
+    function airCoordList(actualAirList, airID)
+    {
+        var actualCounter = airID;
+        reply2 = actualAirList;
+
+        var xArray = []
+        var yArray = []
+        var zArray = []
+        var clockArray = []
+
+        for (var i = 0; i < reply2[actualCounter].coordinates.length; i++)
+        {
+            xArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].x))
+            yArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].y))
+            zArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].z))
+            clockArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].gameclock))
+        }
+
+        var table = document.createElement('table');
+
+        var tr = document.createElement('tr');
+
+        var th0 = document.createElement('th');
+        th0.appendChild(document.createTextNode("Game Clock"));
+        var th1 = document.createElement('th');
+        th1.appendChild(document.createTextNode("X Coordinate"));
+        var th2 = document.createElement('th');
+        th2.appendChild(document.createTextNode("Y Coordinate"));
+        var th3 = document.createElement('th');
+        th3.appendChild(document.createTextNode("Z Coordinate"));
+
+        tr.appendChild(th0);
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+
+        table.appendChild(tr);
+
+        for (var i = 0; i < xArray.length; i++)
+        {
+            var tr = document.createElement('tr');
+            var td0 = document.createElement('td');
+            td0.appendChild(document.createTextNode(clockArray[i]));
+            var td1 = document.createElement('td');
+            td1.appendChild(document.createTextNode(xArray[i]));
+            var td1 = document.createElement('td');
+            td1.appendChild(document.createTextNode(xArray[i]));
+            var td2 = document.createElement('td');
+            td2.appendChild(document.createTextNode(yArray[i]));
+            var td3 = document.createElement('td');
+            td3.appendChild(document.createTextNode(zArray[i]));
+
+            tr.appendChild(td0);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+
+            table.appendChild(tr);
+        }
+
+        table.setAttribute('class', 'container');
+
+        document.body.appendChild(table);
+    }
+    function airDetail(actualAirList, airID)
+    {
+        reply2 = actualAirList;
+        var actualCounter = airID;
+
+        var table = document.createElement('table');
+        table.setAttribute('class', 'container');
+
+        //Create headers
+        var h1 = document.createElement('th');
+        h1.appendChild(document.createTextNode("Player Name"));
+        var h2 = document.createElement('th');
+        h2.appendChild(document.createTextNode("Team"));
+        var h3 = document.createElement('th');
+        h3.appendChild(document.createTextNode("Quarter"));
+        var h4 = document.createElement('th');
+        h4.appendChild(document.createTextNode("Time"));
+        var h6 = document.createElement('th');
+        h6.appendChild(document.createTextNode("Distance"));
+
+        //Add headers to table
+        table.appendChild(h1);
+        table.appendChild(h2);
+        table.appendChild(h3);
+        table.appendChild(h4);
+        table.appendChild(h6);
+
+        var tra = document.createElement('tr');
+        var tda = document.createElement('td');
+        var tdb = document.createElement('td');
+        var tdc = document.createElement('td');
+        var tdd = document.createElement('td');
+        var tde = document.createElement('td');
+
+        pName = reply2[actualCounter].playername;
+        team = reply2[actualCounter].team;
+        quarter = reply2[actualCounter].quarter;
+        time = reply2[actualCounter].time;
+        distance = reply2[actualCounter].distance;
+
+        var text1 = document.createTextNode(pName);
+        var text2 = document.createTextNode(team);
+        var text3 = document.createTextNode(quarter);
+        var text4 = document.createTextNode(time);
+        var text5 = document.createTextNode(distance);
+
+        tda.appendChild(text1);
+        tdb.appendChild(text2);
+        tdc.appendChild(text3);
+        tdd.appendChild(text4);
+        tde.appendChild(text5);
+
+        tra.appendChild(tda);
+        tra.appendChild(tdb);
+        tra.appendChild(tdc);
+        tra.appendChild(tdd);
+        tra.appendChild(tde);
+
+        table.appendChild(tra);
+
+        document.body.appendChild(table);
+
+        var xArray = []
+        var yArray = []
+        var zArray = []
+        var clockArray = []
+
+        for (var i = 0; i < reply2[actualCounter].coordinates.length; i++)
+        {
+            xArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].x))
+            yArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].y))
+            zArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].z))
+            clockArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].gameclock))
+        }
+
+        var x = {
+            x: xArray,
+            y: yArray,
+            z: zArray,
+
+            type: 'scatter3d'
+        };
+        var data = [x];
+        var layout = {
+            width: 1000,
+            height: 500,
+            margin: {
+                t: 0,
+                b: 40,
+                l: 50,
+                r: 25
+            },
+            xaxis: {
+                title: {
+                    text: "X- Axis"
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "Y- Axis"
+                }
+            }
+        };
+
+        var div = document.createElement('div');
+
+        Plotly.newPlot(div, data, layout);
+        div.setAttribute('class', 'container');
+        div.setAttribute('align', 'center');
+        document.body.appendChild(div);
+
+
+        var table15 = document.createElement('table');
+
+        var th1 = document.createElement('th');
+        th1.appendChild(document.createTextNode("Coordinates"));
+
+        table15.appendChild(th1);
+
+        var tr = document.createElement('tr');
+        var td1 = document.createElement('td');
+
+        var btn47 = document.createElement('button');
+        btn47.appendChild(document.createTextNode("View list of coordinates"));
+        btn47.onclick = (function(actualAirList, actualCounter) {
+            return function() {
+               table15.style.display = 'none';
+               airCoordList(actualAirList, actualCounter);
+            };
+        })(actualAirList, actualCounter);
+
+        td1.appendChild(btn47);
+
+        tr.appendChild(td1);
+
+        table15.appendChild(tr);
+
+        table15.setAttribute('class', 'container');
+
+        document.body.appendChild(table15);
+    }
+    function airList(counter)
+    {
+        var finalID = counter;
+        var actualCounter = 0;
+        $.ajax({
+            url: "/cgi-bin/simpleGame.py",
+            type: "post",
+            datatype:"json",
+            data: {'game': finalID, 'air': 'True'},
+            success: function(response)
+            {
+                reply = JSON.stringify(response);
+                reply2 = JSON.parse(reply);
+                actualAirList = reply2;
+
+                fileLength = reply2.length;
+
+                var table = document.createElement('table');
+
+                table.setAttribute('class', 'container');
+
+                //Create headers
+                var h1 = document.createElement('th');
+                h1.appendChild(document.createTextNode("Player Name"));
+                h1.onclick = function () { sortTable(0, table) };
+                var h2 = document.createElement('th');
+                h2.appendChild(document.createTextNode("Team"));
+                h2.onclick = function () { sortTable(1, table) };
+                var h3 = document.createElement('th');
+                h3.appendChild(document.createTextNode("Quarter"));
+                h3.onclick = function () { sortTable(2, table) };
+                var h4 = document.createElement('th');
+                h4.appendChild(document.createTextNode("Time"));
+                var h6 = document.createElement('th');
+                h6.appendChild(document.createTextNode("Distance (Feet)"));
+                h6.onclick = function () { sortTableNumbers(4, table) };
+                var h7 = document.createElement('th');
+                h7.appendChild(document.createTextNode("Query"));
+
+                //Add headers to table
+                table.appendChild(h1);
+                table.appendChild(h2);
+                table.appendChild(h3);
+                table.appendChild(h4);
+                table.appendChild(h6);
+                table.appendChild(h7);
+
+
+                for (i = 0; i < fileLength; i++){
+                    var tr = document.createElement('tr');
+                    var td1 = document.createElement('td');
+                    var td2 = document.createElement('td');
+                    var td3 = document.createElement('td');
+                    var td4 = document.createElement('td');
+                    var td6 = document.createElement('td');
+                    var td7 = document.createElement('td');
+
+                    pName = reply2[i].playername;
+                    team = reply2[i].team;
+                    quarter = reply2[i].quarter;
+                    time = reply2[i].time;
+                    distance = reply2[i].distance;
+
+
+                    var text1 = document.createTextNode(pName);
+                    var text2 = document.createTextNode(team);
+                    var text3 = document.createTextNode(quarter);
+                    var text4 = document.createTextNode(time);
+                    var text6 = document.createTextNode(distance);
+                    var btn = document.createElement('button');
+                    btn.appendChild(document.createTextNode("Query"));
+
+                    actualCounter = i;
+                    btn.onclick = (function(actualAirList, actualCounter) {
+                    return function() {
+                       table.style.display = 'none';
+                       airDetail(actualAirList, actualCounter);
+                    };
+                    })(actualAirList, actualCounter);
+
+
+                    td1.appendChild(text1);
+                    td2.appendChild(text2);
+                    td3.appendChild(text3);
+                    td4.appendChild(text4);
+                    td6.appendChild(text6);
+                    td7.appendChild(btn);
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    tr.appendChild(td6);
+                    tr.appendChild(td7);
+
+                    table.appendChild(tr);
+                }
+
+                document.body.appendChild(table);
+            }
+        });
+    }
+    function jumpCoordList(actualJumpList, counter)
+    {
+        var actualCounter = counter;
+        reply2 = actualJumpList;
+
+        var xArray = []
+        var yArray = []
+        var zArray = []
+        var clockArray = []
+
+        for (var i = 0; i < reply2[actualCounter].coordinates.length; i++)
+        {
+            xArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].x))
+            yArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].y))
+            zArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].z))
+            clockArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].gameclock))
+        }
+
+        var table = document.createElement('table');
+
+        var tr = document.createElement('tr');
+
+        var th0 = document.createElement('th');
+        th0.appendChild(document.createTextNode("Game Clock"));
+        var th1 = document.createElement('th');
+        th1.appendChild(document.createTextNode("X Coordinate"));
+        var th2 = document.createElement('th');
+        th2.appendChild(document.createTextNode("Y Coordinate"));
+        var th3 = document.createElement('th');
+        th3.appendChild(document.createTextNode("Z Coordinate"));
+
+        tr.appendChild(th0);
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+
+        table.appendChild(tr);
+
+        for (var i = 0; i < xArray.length; i++)
+        {
+            var tr = document.createElement('tr');
+            var td0 = document.createElement('td');
+            td0.appendChild(document.createTextNode(clockArray[i]));
+            var td1 = document.createElement('td');
+            td1.appendChild(document.createTextNode(xArray[i]));
+            var td1 = document.createElement('td');
+            td1.appendChild(document.createTextNode(xArray[i]));
+            var td2 = document.createElement('td');
+            td2.appendChild(document.createTextNode(yArray[i]));
+            var td3 = document.createElement('td');
+            td3.appendChild(document.createTextNode(zArray[i]));
+
+            tr.appendChild(td0);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+
+            table.appendChild(tr);
+        }
+
+        table.setAttribute('class', 'container');
+
+        document.body.appendChild(table);
+    }
+    function jumpDetail(actualJumpList, counter)
+    {
+        var actualCounter = counter;
+        replyObj2 = actualJumpList;
+
+        var table = document.createElement('table');
+        table.setAttribute('class', 'container');
+
+        //Create headers
+        var h1 = document.createElement('th');
+        h1.appendChild(document.createTextNode("Home Player"));
+        var h2 = document.createElement('th');
+        h2.appendChild(document.createTextNode("Visitor Player"));
+        var h3 = document.createElement('th');
+        h3.appendChild(document.createTextNode("Possession Player"));
+        var h4 = document.createElement('th');
+        h4.appendChild(document.createTextNode("Possession Team"));
+        var h5 = document.createElement('th');
+        h5.appendChild(document.createTextNode("Quarter"));
+        var h6 = document.createElement('th');
+        h6.appendChild(document.createTextNode("Time"));
+        var h7 = document.createElement('th');
+        h7.appendChild(document.createTextNode("Angle"));
+        var h8 = document.createElement('th');
+        h8.appendChild(document.createTextNode("Max Height"));
+
+        //Add headers to table
+        table.appendChild(h1);
+        table.appendChild(h2);
+        table.appendChild(h3);
+        table.appendChild(h4);
+        table.appendChild(h5);
+        table.appendChild(h6);
+        table.appendChild(h7);
+        table.appendChild(h8);
+
+        var tra = document.createElement('tr');
+        var tda = document.createElement('td');
+        var tdb = document.createElement('td');
+        var tdc = document.createElement('td');
+        var tdd = document.createElement('td');
+        var tde = document.createElement('td');
+        var tdf = document.createElement('td');
+        var tdg = document.createElement('td');
+        var tdh = document.createElement('td');
+
+        homeP = replyObj2[actualCounter].homePlayer;
+        visP = replyObj2[actualCounter].visitorPlayer;
+        possP = replyObj2[actualCounter].possessionPlayer;
+        possTeam = replyObj2[actualCounter].possessionTeam;
+        quarter = replyObj2[actualCounter].quarter;
+        time = replyObj2[actualCounter].time;
+        angle = replyObj2[actualCounter].angle;
+        maxHeight = replyObj2[actualCounter].maxHeight;
+
+        var text1 = document.createTextNode(homeP);
+        var text2 = document.createTextNode(visP);
+        var text3 = document.createTextNode(possP);
+        var text4 = document.createTextNode(possTeam);
+        var text5 = document.createTextNode(quarter);
+        var text6 = document.createTextNode(time);
+        var text7 = document.createTextNode(angle);
+        var text8 = document.createTextNode(maxHeight);
+
+        tda.appendChild(text1);
+        tdb.appendChild(text2);
+        tdc.appendChild(text3);
+        tdd.appendChild(text4);
+        tde.appendChild(text5);
+        tdf.appendChild(text6);
+        tdg.appendChild(text7);
+        tdh.appendChild(text8);
+
+        tra.appendChild(tda);
+        tra.appendChild(tdb);
+        tra.appendChild(tdc);
+        tra.appendChild(tdd);
+        tra.appendChild(tde);
+        tra.appendChild(tdf);
+        tra.appendChild(tdg);
+        tra.appendChild(tdh);
+
+        table.appendChild(tra);
+
+        document.body.appendChild(table);
+
+        var xArray = []
+        var yArray = []
+        var zArray = []
+        var clockArray = []
+
+        for (var i = 0; i < replyObj2[actualCounter].coordinates.length; i++)
+        {
+            xArray.push(JSON.stringify(replyObj2[actualCounter].coordinates[i].x))
+            yArray.push(JSON.stringify(replyObj2[actualCounter].coordinates[i].y))
+            zArray.push(JSON.stringify(replyObj2[actualCounter].coordinates[i].z))
+            clockArray.push(JSON.stringify(replyObj2[actualCounter].coordinates[i].gameclock))
+        }
+
+        var x = {
+            x: xArray,
+            y: yArray,
+            z: zArray,
+
+            type: 'scatter3d'
+        };
+        var data = [x];
+        var layout = {
+            width: 1000,
+            height: 500,
+            margin: {
+                t: 0,
+                b: 40,
+                l: 50,
+                r: 25
+            },
+            xaxis: {
+                title: {
+                    text: "X- Axis"
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "Y- Axis"
+                }
+            }
+        };
+
+        var div = document.createElement('div');
+
+        Plotly.newPlot(div, data, layout);
+        div.setAttribute('class', 'container');
+        div.setAttribute('align', 'center');
+        document.body.appendChild(div);
+
+
+        var table9 = document.createElement('table');
+
+        var th1 = document.createElement('th');
+        th1.appendChild(document.createTextNode("Coordinates"));
+
+        table9.appendChild(th1);
+
+        var tra =document.createElement('tr');
+        var tda = document.createElement('td');
+
+        var btn23 = document.createElement('button');
+        btn23.appendChild(document.createTextNode("View list of coordinates"));
+        btn23.onclick = (function(actualJumpList, actualCounter) {
+            return function() {
+               //div.style.display = 'none';
+               table9.style.display = 'none';
+               jumpCoordList(actualJumpList, actualCounter);
+
+            };
+        })(actualJumpList, actualCounter);
+
+        tda.appendChild(btn23);
+
+        tra.appendChild(tda);
+
+        table9.appendChild(tra);
+
+        table9.setAttribute('class', 'container');
+
+        document.body.appendChild(table9);
+    }
+    function jumpList(id)
+    {
+        var actualGameId = id;
+        $.ajax({
+            url: "/cgi-bin/simpleGame.py",
+            type: "post",
+            datatype:"json",
+            data: {'gameid': actualGameId,'jump':'True'},
+        success:     function(response)
+            {
+                replyObj = JSON.stringify(response);
+                replyObj2 = JSON.parse(replyObj);
+                actualJumpList = replyObj2;
+
+                var table = document.createElement('table');
+                var fileLength = replyObj2.length;
+
+
+
+                table.setAttribute('class', 'container');
+
+                //Create headers
+                var h1 = document.createElement('th');
+                h1.appendChild(document.createTextNode("Home Player"));
+                h1.onclick = function () { sortTable(0, table) };
+                var h2 = document.createElement('th');
+                h2.appendChild(document.createTextNode("Visitor Player"));
+                h2.onclick = function () { sortTable(1, table) };
+                var h3 = document.createElement('th');
+                h3.appendChild(document.createTextNode("Possession Player"));
+                h3.onclick = function () { sortTable(2, table) };
+                var h4 = document.createElement('th');
+                h4.appendChild(document.createTextNode("Possession Team"));
+                h4.onclick = function () { sortTable(3, table) };
+                var h5 = document.createElement('th');
+                h5.appendChild(document.createTextNode("Quarter"));
+                h5.onclick = function () { sortTable(4, table) };
+                var h6 = document.createElement('th');
+                h6.appendChild(document.createTextNode("Time"));
+                var h7 = document.createElement('th');
+                h7.appendChild(document.createTextNode("Angle (°)"));
+                h7.onclick = function () { sortTableNumbers(6, table) };
+                var h8 = document.createElement('th');
+                h8.appendChild(document.createTextNode("Max Height (Feet)"));
+                h8.onclick = function () { sortTableNumbers(7, table) };
+                var h9 = document.createElement('th');
+                h9.appendChild(document.createTextNode("Query"));
+
+                //Add headers to table
+                table.appendChild(h1);
+                table.appendChild(h2);
+                table.appendChild(h3);
+                table.appendChild(h4);
+                table.appendChild(h5);
+                table.appendChild(h6);
+                table.appendChild(h7);
+                table.appendChild(h8);
+                table.appendChild(h9);
+
+                for (i = 0; i < fileLength; i++)
+                {
+                    var tr = document.createElement('tr');
+                    var td1 = document.createElement('td');
+                    var td2 = document.createElement('td');
+                    var td3 = document.createElement('td');
+                    var td4 = document.createElement('td');
+                    var td5 = document.createElement('td');
+                    var td6 = document.createElement('td');
+                    var td7 = document.createElement('td');
+                    var td8 = document.createElement('td');
+                    var td9 = document.createElement('td');
+
+                    homeP = replyObj2[i].homePlayer;
+                    visP = replyObj2[i].visitorPlayer;
+                    possP = replyObj2[i].possessionPlayer;
+                    possTeam = replyObj2[i].possessionTeam;
+                    quarter = replyObj2[i].quarter;
+                    time = replyObj2[i].time;
+                    angle = replyObj2[i].angle;
+                    maxHeight = replyObj2[i].maxHeight;
+
+                    var arrayID = i;
+
+                    var text1 = document.createTextNode(homeP);
+                    var text2 = document.createTextNode(visP);
+                    var text3 = document.createTextNode(possP);
+                    var text4 = document.createTextNode(possTeam);
+                    var text5 = document.createTextNode(quarter);
+                    var text6 = document.createTextNode(time);
+                    var text7 = document.createTextNode(angle);
+                    var text8 = document.createTextNode(maxHeight);
+                    var btn = document.createElement('button');
+                    btn.appendChild(document.createTextNode("Query"));
+                    btn.onclick = (function(actualJumpList, arrayID) {
+                    return function() {
+                       table.style.display = 'none';
+                       jumpDetail(actualJumpList, arrayID);
+                    };
+                    })(actualJumpList, arrayID);
+
+
+                    td1.appendChild(text1);
+                    td2.appendChild(text2);
+                    td3.appendChild(text3);
+                    td4.appendChild(text4);
+                    td5.appendChild(text5);
+                    td6.appendChild(text6);
+                    td7.appendChild(text7);
+                    td8.appendChild(text8);
+                    td9.appendChild(btn);
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    tr.appendChild(td5);
+                    tr.appendChild(td6);
+                    tr.appendChild(td7);
+                    tr.appendChild(td8);
+                    tr.appendChild(td9);
+
+                    table.appendChild(tr);
+                }
+                document.body.appendChild(table);
+            }
+        });
+    }
+    function shotCoordList(actualShotList, shotID)
+    {
+        var actualCounter = shotID;
+        reply2 = actualShotList;
+
+        var xArray = []
+        var yArray = []
+        var zArray = []
+        var clockArray = []
+
+        for (var i = 0; i < reply2[actualCounter].coordinates.length; i++)
+        {
+            xArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].x))
+            yArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].y))
+            zArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].z))
+            clockArray.push(JSON.stringify(reply2[actualCounter].coordinates[i].gameclock))
+        }
+
+        var table = document.createElement('table');
+
+        var tr = document.createElement('tr');
+
+        var th0 = document.createElement('th');
+        th0.appendChild(document.createTextNode("Game Clock"));
+        var th1 = document.createElement('th');
+        th1.appendChild(document.createTextNode("X Coordinate"));
+        var th2 = document.createElement('th');
+        th2.appendChild(document.createTextNode("Y Coordinate"));
+        var th3 = document.createElement('th');
+        th3.appendChild(document.createTextNode("Z Coordinate"));
+
+        tr.appendChild(th0);
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+
+        table.appendChild(tr);
+
+        for (var i = 0; i < xArray.length; i++)
+        {
+            var tr = document.createElement('tr');
+            var td0 = document.createElement('td');
+            td0.appendChild(document.createTextNode(clockArray[i]));
+            var td1 = document.createElement('td');
+            td1.appendChild(document.createTextNode(xArray[i]));
+            var td1 = document.createElement('td');
+            td1.appendChild(document.createTextNode(xArray[i]));
+            var td2 = document.createElement('td');
+            td2.appendChild(document.createTextNode(yArray[i]));
+            var td3 = document.createElement('td');
+            td3.appendChild(document.createTextNode(zArray[i]));
+
+            tr.appendChild(td0);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+
+            table.appendChild(tr);
+        }
+
+        table.setAttribute('class', 'container');
+
+        document.body.appendChild(table);
+    }
+    function shotDetail(actualShotList, shotID)
+    {
+        var actualCounter = shotID;
+        replyObj2 = actualShotList;
+        var table = document.createElement('table');
+
+        table.setAttribute('class', 'container');
+
+        var th = document.createElement('th');
+        th.appendChild(document.createTextNode("Player Name"));
+        var th2 = document.createElement('th');
+        th2.appendChild(document.createTextNode("Team"));
+        var th3 = document.createElement('th');
+        th3.appendChild(document.createTextNode("Quarter"));
+        var th4 = document.createElement('th');
+        th4.appendChild(document.createTextNode("Time"));
+        var th5 = document.createElement('th');
+        th5.appendChild(document.createTextNode("Result"));
+        var th6 = document.createElement('th');
+        th6.appendChild(document.createTextNode("Distance"));
+        var th7 = document.createElement('th');
+        th7.appendChild(document.createTextNode("Assist"));
+
+        table.appendChild(th);
+        table.appendChild(th2);
+        table.appendChild(th3);
+        table.appendChild(th4);
+        table.appendChild(th5);
+        table.appendChild(th6);
+        table.appendChild(th7);
+
+        var tr = document.createElement('tr');
+
+        var td = document.createElement('td');
+        var td2 = document.createElement('td');
+        var td3 = document.createElement('td');
+        var td4 = document.createElement('td');
+        var td5 = document.createElement('td');
+        var td6 = document.createElement('td');
+        var td7 = document.createElement('td');
+
+        pName = replyObj2[actualCounter].playername;
+        team = replyObj2[actualCounter].team;
+        quarter = replyObj2[actualCounter].quarter;
+        time = replyObj2[actualCounter].time;
+        result = replyObj2[actualCounter].result;
+        distance = replyObj2[actualCounter].distance;
+        assist = replyObj2[actualCounter].assist;
+
+        td.appendChild(document.createTextNode(pName));
+        td2.appendChild(document.createTextNode(team));
+        td3.appendChild(document.createTextNode(quarter));
+        td4.appendChild(document.createTextNode(time));
+        td5.appendChild(document.createTextNode(result));
+        td6.appendChild(document.createTextNode(distance));
+        td7.appendChild(document.createTextNode(assist));
+
+        tr.appendChild(td);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        tr.appendChild(td4);
+        tr.appendChild(td5);
+        tr.appendChild(td6);
+        tr.appendChild(td7);
+
+        table.appendChild(tr);
+
+        document.body.appendChild(table);
+
+        var xArray = []
+        var yArray = []
+        var zArray = []
+        var clockArray = []
+
+        for (var i = 0; i < replyObj2[actualCounter].coordinates.length; i++)
+        {
+            xArray.push(JSON.stringify(replyObj2[actualCounter].coordinates[i].x))
+            yArray.push(JSON.stringify(replyObj2[actualCounter].coordinates[i].y))
+            zArray.push(JSON.stringify(replyObj2[actualCounter].coordinates[i].z))
+            clockArray.push(JSON.stringify(replyObj2[actualCounter].coordinates[i].gameclock))
+        }
+
+        var x = {
+            x: xArray,
+            y: yArray,
+            z: zArray,
+
+            type: 'scatter3d'
+        };
+        var data = [x];
+        var layout = {
+            width: 1000,
+            height: 500,
+            margin: {
+                t: 0,
+                b: 40,
+                l: 50,
+                r: 25
+            },
+            xaxis: {
+                title: {
+                    text: "X- Axis"
+                }
+            },
+            yaxis: {
+                title: {
+                    text: "Y- Axis"
+                }
+            }
+        };
+
+        var div = document.createElement('div');
+
+        Plotly.newPlot(div, data, layout);
+        div.setAttribute('class', 'container');
+        div.setAttribute('align', 'center');
+        document.body.appendChild(div);
+
+
+        var table9 = document.createElement('table');
+
+        var th1 = document.createElement('th');
+        th1.appendChild(document.createTextNode("Coordinates"));
+
+        table9.appendChild(th1);
+
+        var tr1 = document.createElement('tr');
+        var td1 = document.createElement('td');
+
+        var btn1 = document.createElement('button');
+        btn1.appendChild(document.createTextNode("View list of coordinates"));
+        btn1.onclick = (function(actualShotList, shotID) {
+            return function() {
+               table9.style.display = 'none';
+               shotCoordList(actualShotList, shotID);
+
+            };
+        })(actualShotList, shotID);
+
+        td1.appendChild(btn1);
+
+        tr1.appendChild(td1);
+
+        table9.appendChild(tr1);
+
+        table9.setAttribute('class', 'container');
+
+        document.body.appendChild(table9);
+    }
+    function gameInfo(counter)
+    {
+        var url = "http://localhost:8080/GameFiles/" + counter + ".json";
+        var http = new XMLHttpRequest();
+        http.open("GET", url, true);
+        http.onreadystatechange = function() {
+            var DONE = 4;       // 4 means the request is done.
+            var OK = 200;       // 200 means a successful return.
+            if (http.readyState == DONE && http.status == OK && http.responseText) {
+                // JSON string
+                replyString = http.responseText;
+                // convert JSON string into JavaScript object
+                replyObj = JSON.parse(replyString);
+
+                gameid = replyObj.gameid
+                gamedate = replyObj.gamedate
+                homeT = replyObj.events[0].home.name
+                awayT = replyObj.events[0].visitor.name
+
+                var table = document.createElement('table');
+
+                table.setAttribute('class', 'container');
+
+                var h1 = document.createElement('th');
+                h1.appendChild(document.createTextNode("Game ID"));
+                var h2 = document.createElement('th');
+                h2.appendChild(document.createTextNode("Game Date"));
+                var h3 = document.createElement('th');
+                h3.appendChild(document.createTextNode("Home Team"));
+                var h4 = document.createElement('th');
+                h4.appendChild(document.createTextNode("Away Team"));
+
+                table.appendChild(h1);
+                table.appendChild(h2);
+                table.appendChild(h3);
+                table.appendChild(h4);
+
+                var tr = document.createElement('tr');
+
+                var td1 = document.createElement('td');
+                var td2 = document.createElement('td');
+                var td3 = document.createElement('td');
+                var td4 = document.createElement('td');
+
+                var text1 = document.createTextNode(gameid);
+                var text2 = document.createTextNode(gamedate);
+                var text3 = document.createTextNode(homeT);
+                var text4 = document.createTextNode(awayT);
+
+
+                td1.appendChild(text1);
+                td2.appendChild(text2);
+                td3.appendChild(text3);
+                td4.appendChild(text4);
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+
+                table.appendChild(tr);
+
+                document.body.appendChild(table);
+
+                var fName = " ";
+                var lName = " ";
+                var name = " ";
+                var jersey = 0;
+                var position = " ";
+                var div;
+
+                var hLength = replyObj.events[0].home.players.length;
+                var aLength = replyObj.events[0].visitor.players.length;
+
+                var table4 = document.createElement("table");
+
+                div = document.createElement('div');
+
+                var c1 = document.createElement('th');
+                var c2 = document.createElement('th');
+                var c3 = document.createElement('th');
+
+                c1.appendChild(document.createTextNode("Player Name"));
+                c1.onclick = function () { sortTable(0, table4) };
+                c2.appendChild(document.createTextNode("Number"));
+                c2.onclick = function () { sortTableNumbers(1, table4) };
+                c3.appendChild(document.createTextNode("Position"));
+                c3.onclick = function () { sortTable(2, table4) };
+
+                table4.appendChild(c1);
+                table4.appendChild(c2);
+                table4.appendChild(c3);
+
+
+                for (var i = 0; i < hLength - 1; i++)
+                {
+                    var tr = document.createElement('tr');
+
+                    var td = document.createElement('td');
+                    var td2 = document.createElement('td');
+                    var td3 = document.createElement('td');
+
+                    fName = replyObj.events[0].home.players[i].firstname;
+                    lName = replyObj.events[0].home.players[i].lastname;
+
+                    name = fName + " " + lName;
+
+                    number = replyObj.events[0].home.players[i].jersey;
+
+                    position = replyObj.events[0].home.players[i].position;
+
+                    td.appendChild(document.createTextNode(name));
+                    td2.appendChild(document.createTextNode(number));
+                    td3.appendChild(document.createTextNode(position));
+
+                    tr.appendChild(td);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+
+                    table4.appendChild(tr);
+                }
+
+                div.appendChild(table4);
+
+                var table5 = document.createElement("table");
+
+                var d1 = document.createElement('th');
+                var d2 = document.createElement('th');
+                var d3 = document.createElement('th');
+
+                d1.appendChild(document.createTextNode("Player Name"));
+                d1.onclick = function () { sortTable(0, table5) };
+                d2.appendChild(document.createTextNode("Number"));
+                d2.onclick = function () { sortTableNumbers(1, table5) };
+                d3.appendChild(document.createTextNode("Position"));
+                d3.onclick = function () { sortTable(2, table5) };
+
+                table5.appendChild(d1);
+                table5.appendChild(d2);
+                table5.appendChild(d3);
+
+
+                for (var i = 0; i < aLength - 1; i++)
+                {
+                    var tr = document.createElement('tr');
+
+                    var td = document.createElement('td');
+                    var td2 = document.createElement('td');
+                    var td3 = document.createElement('td');
+
+                    fName = replyObj.events[0].visitor.players[i].firstname;
+                    lName = replyObj.events[0].visitor.players[i].lastname;
+
+                    name = fName + " " + lName;
+
+                    number = replyObj.events[0].visitor.players[i].jersey;
+
+                    position = replyObj.events[0].visitor.players[i].position;
+
+                    td.appendChild(document.createTextNode(name));
+                    td2.appendChild(document.createTextNode(number));
+                    td3.appendChild(document.createTextNode(position));
+
+                    tr.appendChild(td);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+
+                    table5.appendChild(tr);
+                }
+
+                table4.setAttribute('class', 'container');
+                table5.setAttribute('class', 'container');
+
+                div.appendChild(table5);
+
+                div.setAttribute('class', 'flex-container')
+
+                document.body.appendChild(div);
+
+                var table2 = document.createElement('table');
+
+                table2.setAttribute('class', 'container');
+
+                var a1 = document.createElement('th');
+                a1.appendChild(document.createTextNode("Shots"));
+                var a2 = document.createElement('th');
+                a2.appendChild(document.createTextNode("Jump balls"));
+                var a3 = document.createElement('th');
+                a3.appendChild(document.createTextNode("Passes"));
+                var a5 = document.createElement('th');
+                a5.appendChild(document.createTextNode("Air balls"));
+
+                table2.appendChild(a1);
+                table2.appendChild(a2);
+                table2.appendChild(a3);
+                table2.appendChild(a5);
+
+                var trb = document.createElement('tr');
+
+                var tda = document.createElement('td');
+                var tdb = document.createElement('td');
+                var tdc = document.createElement('td');
+                var tdd = document.createElement('td');
+                var tde = document.createElement('td');
+
+                var btn1 = document.createElement('button');
+                btn1.appendChild(document.createTextNode("List of shots"));
+
+                /////////////////////////////////////////////////////
+
+                btn1.onclick = (function(counter) {
+                    return function() {
+                       table4.style.display = 'none';
+                       table5.style.display = 'none';
+                       table2.style.display = 'none';
+                       table.style.display = 'none';
+                       shotList(counter);
+
+                    };
+                })(counter);
+
+                /////////////////////////////////////////////////////
+                var btn2 = document.createElement('button');
+                btn2.appendChild(document.createTextNode("List of jump balls"));
+                btn2.onclick = (function(counter) {
+                    return function() {
+                       table4.style.display = 'none';
+                       table5.style.display = 'none';
+                       table2.style.display = 'none';
+                       table.style.display = 'none';
+                       jumpList(counter);
+
+                    };
+                })(counter);
+                var btn3 = document.createElement('button');
+                btn3.appendChild(document.createTextNode("List of passes"));
+                btn3.onclick = (function(counter) {
+                    return function() {
+                       table4.style.display = 'none';
+                       table5.style.display = 'none';
+                       table2.style.display = 'none';
+                       table.style.display = 'none';
+                       passList(counter);
+                    };
+                })(counter);
+                var btn5 = document.createElement('button');
+                btn5.appendChild(document.createTextNode("List of air balls"));
+                btn5.onclick = (function(counter) {
+                    return function() {
+                       table4.style.display = 'none';
+                       table5.style.display = 'none';
+                       table2.style.display = 'none';
+                       table.style.display = 'none';
+                       airList(counter);
+
+                    };
+                })(counter);
+
+                tda.appendChild(btn1);
+                tdb.appendChild(btn2);
+                tdc.appendChild(btn3);
+                tde.appendChild(btn5);
+
+                trb.appendChild(tda);
+                trb.appendChild(tdb);
+                trb.appendChild(tdc);
+                trb.appendChild(tde);
+
+                table2.appendChild(trb);
+
+                document.body.appendChild(table2);
+            }
+        };
+            // Send request
+        http.send();
+    }
+    function shotList(counter)
+    {
+        var table;
+
+        var actualGameId = counter;
+        var actualCounter = 1;
+        $.ajax({
+            url: "/cgi-bin/simpleGame.py",
+            type: "post",
+            datatype:"json",
+            data: {'gameid': actualGameId,'shot':'True'},
+            success: function(response)
+            {
+                replyObj = JSON.stringify(response);
+                replyObj2 = JSON.parse(replyObj);
+                actualShotList = replyObj2;
+
+                fileLength = replyObj2.length;
+
+                var gameBtn = document.createElement('button');
+                gameBtn.appendChild(document.createTextNode("Game Info"));
+                gameBtn.setAttribute('class', 'centerImage');
+                gameBtn.onclick = (function(counter) {
+                    return function() {
+                       table.style.display = 'none';
+                       gameBtn.style.display = 'none';
+                       document.body.innerHTML = ' ';
+                       var nav = document.createElement('nav');
+
+                       var a1 = document.createElement('a');
+                       a1.appendChild(document.createTextNode("HOME"));
+                       a1.setAttribute('href', 'index.html');
+
+                       var a2 = document.createElement('a');
+                       a2.appendChild(document.createTextNode("GAMES"));
+                       a2.setAttribute('href', 'Game.html');
+
+                       var a3 = document.createElement('a');
+                       a3.appendChild(document.createTextNode("INSERT"));
+                       a3.setAttribute('href', 'password-insert.html');
+
+                       var a4 = document.createElement('a');
+                       a4.appendChild(document.createTextNode("DELETE"));
+                       a4.setAttribute('href', 'password-delete.html');
+
+                       nav.appendChild(a1);
+                       nav.appendChild(a2);
+                       nav.appendChild(a3);
+                       nav.appendChild(a4);
+
+                       nav.setAttribute('class', 'nav');
+
+                       document.body.appendChild(nav);
+                       gameInfo(counter);
+                    };
+                })(counter);
+                document.body.appendChild(gameBtn);
+
+                table = document.createElement('table');
+
+                table.setAttribute('class', 'container');
+
+                //Create headers
+                var h1 = document.createElement('th');
+                h1.appendChild(document.createTextNode("Player Name"));
+                h1.onclick = function () { sortTable(0, table) };
+                var h2 = document.createElement('th');
+                h2.appendChild(document.createTextNode("Team"));
+                h2.onclick = function () { sortTable(1, table) };
+                var h3 = document.createElement('th');
+                h3.appendChild(document.createTextNode("Quarter"));
+                h3.onclick = function () { sortTable(2, table) };
+                var h4 = document.createElement('th');
+                h4.appendChild(document.createTextNode("Time"));
+                var h5 = document.createElement('th');
+                h5.appendChild(document.createTextNode("Result"));
+                h5.onclick = function () { sortTable(4, table) };
+                var h6 = document.createElement('th');
+                h6.appendChild(document.createTextNode("Distance (Feet)"));
+                h6.onclick = function () { sortTableNumbers(5, table) };
+                var h7 = document.createElement('th');
+                h7.appendChild(document.createTextNode("Assist"));
+                h7.onclick = function () { sortTable(6, table) };
+                var h8 = document.createElement('th');
+                h8.appendChild(document.createTextNode("Action"));
+
+                //Add headers to table
+                table.appendChild(h1);
+                table.appendChild(h2);
+                table.appendChild(h3);
+                table.appendChild(h4);
+                table.appendChild(h5);
+                table.appendChild(h6);
+                table.appendChild(h7);
+                table.appendChild(h8);
+
+                var i;
+                for (i = 0; i < fileLength; i++)
+                {
+                    var tr = document.createElement('tr');
+                    var td1 = document.createElement('td');
+                    var td2 = document.createElement('td');
+                    var td3 = document.createElement('td');
+                    var td4 = document.createElement('td');
+                    var td5 = document.createElement('td');
+                    var td6 = document.createElement('td');
+                    var td7 = document.createElement('td');
+                    var td8 = document.createElement('button');
+                    actualCounter = i;
+                    td8.onclick = (function(actualShotList, actualCounter) {
+                        return function() {
+                           table.style.display = 'none';
+                           shotDetail(actualShotList, actualCounter);
+                        };
+                    })(actualShotList, actualCounter);
+                    pName = replyObj2[i].playername;
+                    team = replyObj2[i].team;
+                    quarter = replyObj2[i].quarter;
+                    time = replyObj2[i].time;
+                    result = replyObj2[i].result;
+                    distance = replyObj2[i].distance;
+                    assist = replyObj2[i].assist;
+
+                    var text1 = document.createTextNode(pName);
+                    var text2 = document.createTextNode(team);
+                    var text3 = document.createTextNode(quarter);
+                    var text4 = document.createTextNode(time);
+                    var text5 = document.createTextNode(result);
+                    var text6 = document.createTextNode(distance);
+                    var text7 = document.createTextNode(assist);
+                    var query = document.createTextNode("Query");
+
+                    td1.appendChild(text1);
+                    td2.appendChild(text2);
+                    td3.appendChild(text3);
+                    td4.appendChild(text4);
+                    td5.appendChild(text5);
+                    td6.appendChild(text6);
+                    td7.appendChild(text7);
+                    td8.appendChild(query);
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+                    tr.appendChild(td3);
+                    tr.appendChild(td4);
+                    tr.appendChild(td5);
+                    tr.appendChild(td6);
+                    tr.appendChild(td7);
+                    tr.appendChild(td8);
+
+                    table.appendChild(tr);
+                }
+                document.body.appendChild(table);
+
+            }
+        });
+    }
+    function home()
+    {
+        window.location.href ="/index.html";
+    }
+    var url = "http://localhost:8080";   // The URL and the port number must match the server-side
+    var endpoint = "/team-Info.json";
+    var http = new XMLHttpRequest();
+    var fileLength = 0;
+    var gameID = 0;
+    http.open("GET", url+endpoint, true);
+    http.onreadystatechange = function() {
+        var DONE = 4;       // 4 means the request is done.
+        var OK = 200;       // 200 means a successful return.
+        if (http.readyState == DONE && http.status == OK && http.responseText) {
+            // JSON string
+            replyString = http.responseText;
+            // convert JSON string into JavaScript object
+            replyObj = JSON.parse(replyString);
+
+            fileLength = replyObj.length;
+
+            var file = replyObj;
+
+            var head1 = document.createElement('h1');
+            head1.appendChild(document.createTextNode("Available Games"));
+            head1.setAttribute('class', 'centerImage');
+            document.body.appendChild(head1);
+
+            var table = document.createElement('table');
+
+            table.setAttribute('class', 'container');
+
+            //Create headers
+            var h1 = document.createElement('th');
+            h1.appendChild(document.createTextNode("Game ID"));
+            h1.onclick = function () { sortTable(0, table) };
+            var h2 = document.createElement('th');
+            h2.appendChild(document.createTextNode("Game Date"));
+            h2.onclick = function () { sortTable(1, table) };
+            var h3 = document.createElement('th');
+            h3.appendChild(document.createTextNode("Home Team"));
+            h3.onclick = function () { sortTable(2, table) };
+            var h4 = document.createElement('th');
+            h4.appendChild(document.createTextNode("Away Team"));
+            h4.onclick = function () { sortTable(3, table) };
+            var h5 = document.createElement('th');
+            h5.appendChild(document.createTextNode("Action"));
+
+            //Add headers to table
+            table.appendChild(h1);
+            table.appendChild(h2);
+            table.appendChild(h3);
+            table.appendChild(h4);
+            table.appendChild(h5);
+
+            var counter = 0;
+
+
+            for (var i = 1; i < file.length; i++){
+                var tr = document.createElement('tr');
+
+                var td1 = document.createElement('td');
+                var td2 = document.createElement('td');
+                var td3 = document.createElement('td');
+                var td4 = document.createElement('td');
+                var td5 = document.createElement('td');
+
+                gameID = file[i]["game id"];
+                gameDate = file[i]["game date"];
+                hTeam = file[i]["home team"];
+                aTeam = file[i]["away team"];
+                var text1 = document.createTextNode(gameID);
+                var text2 = document.createTextNode(gameDate);
+                var text3 = document.createTextNode(hTeam);
+                var text4 = document.createTextNode(aTeam);
+
+                var btn0 = document.createElement('button');
+                btn0.onclick = (function(gameID) {
+                    return function() {
+                       head1.style.visibility = 'hidden';
+                       //h1b.style.visibility = 'hidden';
+                       table.style.display = 'none';
+                       gameInfo(gameID);
+                    };
+                })(gameID);
+
+                var btn1 = document.createElement('button');
+                btn1.onclick = (function(gameID) {
+                    return function() {
+                        head1.style.visibility = 'hidden';
+                        //h1b.style.visibility = 'hidden';
+                        table.style.display = 'none';
+                        shotList(gameID);
+                    };
+                })(gameID);
+
+                var btn2 = document.createElement('button');
+                btn2.onclick = (function(gameID) {
+                    return function() {
+                       head1.style.visibility = 'hidden';
+                       //h1b.style.visibility = 'hidden';
+                       table.style.display = 'none';
+                       jumpList(gameID);
+                    };
+                })(gameID);
+
+                var btn3 = document.createElement('button');
+                btn3.onclick = (function(gameID) {
+                    return function() {
+                       head1.style.visibility = 'hidden';
+                       //h1b.style.visibility = 'hidden';
+                       table.style.display = 'none';
+                       passList(gameID);
+                    };
+                })(gameID);
+
+
+                var btn5 = document.createElement('button');
+                btn5.onclick = (function(gameID) {
+                    return function() {
+                       head1.style.visibility = 'hidden';
+                       //h1b.style.visibility = 'hidden';
+                       table.style.display = 'none';
+                       airList(gameID);
+                    };
+                })(gameID);
+
+                btn0.appendChild(document.createTextNode("Game Info"));
+                btn1.appendChild(document.createTextNode("Shots"));
+                btn2.appendChild(document.createTextNode("Jump balls"));
+                btn3.appendChild(document.createTextNode("Passes"));
+                btn5.appendChild(document.createTextNode("Air balls"));
+
+
+                td1.appendChild(text1);
+                td2.appendChild(text2);
+                td3.appendChild(text3);
+                td4.appendChild(text4);
+
+                td5.appendChild(btn0);
+                td5.appendChild(btn1);
+                td5.appendChild(btn2);
+                td5.appendChild(btn3);
+                td5.appendChild(btn5);
+
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+
+                table.appendChild(tr);
+            }
+        document.body.appendChild(table);
+
+
+        var btn = document.createElement('button');   // Create a <button> element
+            btn.innerHTML = "Back To Top";                   // Insert text
+            btn.setAttribute("id", "topButton");
+            btn.onclick = function() {
+                window.scrollTo(0,0)
+            }
+            document.body.appendChild(btn);               // Append <button> to <body>
+
+        }
+    };
+        // Send request
+    http.send();
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Game</title>
+    <style>
+        body
+        {
+            font-weight: 300;
+            color:#000000;
+            background-color:#17408b;
+        }
+        nav
+        {
+            width: 100%;
+            top: 0;
+            height: 35px;
+            background-color: #DCDCDC;
+            font-size: 30px;
+            font-weight: bold;
+            word-spacing: 30px;
+            font-family:"Helvetica";
+            font-stretch:condensed;
+            position: sticky;
+        }
+
+        a:link
+        {
+            color: black;
+            text-decoration: none;
+            text-shadow: 0 1px 1px #bbb,
+			       0 2px 2px #666;
+	        padding: 10px;
+        }
+
+        a:visited
+        {
+            color: black;
+        }
+
+        a:hover
+        {
+            color: #c9082a;
+            text-shadow: 0 1px 1px #ddd,
+            0 2px 2 #c5bba5;
+        }
+
+        h1, h2
+        {
+            font-family:"Helvetica";
+            font-stretch:condensed;
+	        color: #ffffff;
+	        text-shadow: 0 2px 2px #000000;
+        }
+        p
+        {
+            color:red;
+            font-family:sans-serif;
+        }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+</head>
+<nav>
+    <a href="index.html">HOME</a>
+    <a href="Game.html">GAMES</a>
+    <a href="password-insert.html">INSERT</a>
+    <a href="password-delete.html">DELETE</a>
+</nav>
+<body>
+<h1>Enter Game ID:</h1>
+<form>
+    <input type="text" id="gameid" name="gameid">
+    <button id="submission">Submit</button>
+</form>
+<h2>NOTE:  Place JSON in /GameFiles & Play-By-Play in /PBP Directories.</h2>
+<p id="response"></p>
+<script>
+document.getElementById("submission").addEventListener("click", DeleteGame);
+
+function DeleteGame()
+{
+    var entered = document.getElementById("gameid").value;
+        $.ajax({
+            cache: false,
+            async: false,
+            url: "/cgi-bin/simpleGame.py",
+            type: "post",
+            datatype:"json",
+            data: {'gameid': entered,'delete':'True'},
+            success: function(response)
+            {
+                document.getElementById("response").innerHTML = "Success";
+            },
+            error: function(xhr, status, error)
+            {
+                //document.getElementById("response").innerHTML = "Failure";
+            },
+        });
+}
+</script>
+</body>
+</html>
